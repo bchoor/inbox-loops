@@ -1,0 +1,839 @@
+# Product Requirements Document: Inbox-loops
+
+## Overview
+Inbox-loops is an intelligent email management application that transforms standard emails into structured, trackable lifecycles. The application identifies related emails and organizes them into "loops" - complete cycles that show the progression of processes like orders, refunds, travel bookings, and subscriptions.
+
+Rather than managing individual emails in isolation, users can visualize and track entire processes from beginning to end. For example, an online purchase loop might include order placement, confirmation, shipping notification, and delivery confirmation - all presented as a single, coherent unit rather than disconnected messages.
+
+Inbox-loops serves professionals, busy consumers, and anyone who struggles with email overload. By converting email signals into meaningful, organized processes, it reduces cognitive load, prevents important steps from being missed, and provides clear visibility into the status of ongoing activities.
+
+## Core Features
+
+### 1. Email Loop Detection & Organization
+- **What it does**: Automatically detects related emails and organizes them into cohesive loops based on specific identifiers and patterns
+- **Why it's important**: Eliminates the fragmentation of related emails scattered across an inbox, creating a unified view of complete processes
+- **How it works**: Uses pattern recognition and rule-based analysis to group emails by subject lines, order IDs, booking references, and other identifiers
+
+### 2. Process Visualization
+- **What it does**: Presents each loop as a visual timeline or workflow showing the current status and progression
+- **Why it's important**: Provides instant visibility into what stage a process is at and what remains to be completed
+- **How it works**: Interprets email content to determine process stages and displays them in an intuitive visual format with clear status indicators
+
+### 3. Category-Specific Loop Templates
+- **What it does**: Provides specialized loop templates for shopping, travel, and subscription/utility emails
+- **Why it's important**: Different processes have different stages and requirements; specialized templates enhance clarity and organization
+- **How it works**: Pre-configured rules specific to each category identify and format emails according to their type
+
+### 4. Rule-Based System
+- **What it does**: Powers the loop creation, classification, and visualization through customizable rules
+- **Why it's important**: Enables flexibility and future extensibility while maintaining consistent behavior
+- **How it works**: Backend logic applies rules to incoming emails to determine loop membership, progression status, and visual presentation
+
+### 5. Missing Step Detection
+- **What it does**: Identifies when expected stages in a loop are missing or delayed
+- **Why it's important**: Alerts users to potential issues or follow-ups needed
+- **How it works**: Compares actual progression against expected timeline templates and highlights discrepancies
+
+## User Experience
+
+### User Personas
+
+1. **Active Consumer (Primary)**
+   - Makes frequent online purchases
+   - Books travel regularly
+   - Manages multiple subscriptions and utilities
+   - Needs to track order statuses, confirmations, and payment cycles
+   - Values organization and clarity in email communications
+
+2. **Professional Manager**
+   - Manages multiple projects and processes
+   - Receives hundreds of emails daily
+   - Needs clear organization and status tracking
+   - Values efficiency and reduced mental load
+
+3. **Digital Organizer**
+   - Highly organized individual
+   - Likes systems and structure
+   - Wants better visibility into email-based processes
+   - Appreciates automation that matches their mental models
+
+### Key User Flows
+
+1. **First-Time Setup**
+   - User signs in with Google
+   - Authorizes Gmail API access
+   - Receives onboarding tutorial explaining loop concept
+   - App begins initial scan and organization of existing emails
+
+2. **Viewing Active Loops**
+   - User navigates to dashboard showing all active loops
+   - Loops are organized by category (Shopping, Travel, Subscriptions)
+   - User selects a loop to view detailed timeline and component emails
+
+3. **Managing a Loop**
+   - User can mark entire loops as complete/archived
+   - User can manually add an email to an existing loop
+   - User can create a new loop from scratch
+
+4. **Handling Notifications**
+   - User receives alerts for loop progression
+   - User is notified of missing steps or delays
+   - User can customize notification preferences
+
+### Detailed User Journeys
+
+#### Journey 1: New User Onboarding
+```mermaid
+graph LR
+    A[User] --> B[Lands on Homepage]
+    B --> C[Clicks Sign In]
+    C --> D[Authenticates with Google]
+    D --> E[Authorizes Gmail Access]
+    E --> F[Views Welcome Tutorial]
+    F --> G[Initial Email Scan Begins]
+    G --> H[Presented with First Loops]
+    H --> I[Explores Dashboard]
+```
+
+**Touchpoints & Considerations:**
+- Homepage must clearly communicate the value proposition
+- OAuth flow should be seamless and secure
+- Tutorial should be skippable but comprehensive
+- Initial scan should show progress and not appear frozen
+- First-time dashboard should have helpful tooltips
+
+#### Journey 2: Shopping Order Tracking
+```mermaid
+graph LR
+    A[User] --> B[Receives Order Confirmation Email]
+    B --> C[App Detects New Email]
+    C --> D[Creates/Updates Shopping Loop]
+    D --> E[User Opens App]
+    E --> F[Views Updated Loop]
+    F --> G[Sees Timeline with Order Placed Status]
+    G --> H[Later: Shipping Notification Arrives]
+    H --> I[Loop Updates Automatically]
+    I --> J[User Receives Status Change Notification]
+    J --> K[Views Updated Timeline]
+```
+
+**Touchpoints & Considerations:**
+- Loop detection should happen within minutes of email arrival
+- Timeline visualization should clearly show progression
+- Status changes should be visually prominent
+- Notifications should be timely but not overwhelming
+
+#### Journey 3: Manual Loop Management
+```mermaid
+graph LR
+    A[User] --> B[Opens App]
+    B --> C[Navigates to Loops]
+    C --> D[Clicks 'Create New Loop']
+    D --> E[Selects Loop Category]
+    E --> F[Names Loop]
+    F --> G[Searches Gmail]
+    G --> H[Selects Relevant Emails]
+    H --> I[Arranges in Sequence]
+    I --> J[Saves Loop]
+    J --> K[Views Completed Loop]
+```
+
+**Touchpoints & Considerations:**
+- Loop creation interface should be intuitive
+- Email search should be powerful and fast
+- Sequence arrangement should use drag-and-drop
+- Saving should provide confirmation
+- Viewing should immediately reflect changes
+
+### UI/UX Considerations
+
+1. **Visual Design**
+   - Default dark mode with light mode toggle
+   - Clean, minimal interface using Shadcn/ui components
+   - Visual timeline representation of loops
+
+2. **Information Architecture**
+   - Category-based organization (Shopping, Travel, Subscriptions)
+   - Status-based filtering (Active, Complete, Attention Required)
+   - Search functionality across all loops
+
+3. **Accessibility**
+   - High contrast modes
+   - Keyboard navigation support
+   - Screen reader compatibility
+
+4. **Responsive Design**
+   - Fully functional on desktop and mobile
+   - Optimized views for different screen sizes
+
+### UI Mockups and Wireframes
+
+#### Main Dashboard Layout
+```
++---------------------------------------------------------------+
+|  [Logo] Inbox Loops                 [Dark/Light Mode Toggle] [Settings] [Log Out] |
++---------------------------------------------------------------+
+|                                                               |
+| [Sidebar]                  [Main Content Area]                |
+| +-------------+            +---------------------------+      |
+| | Dashboard   |            | Active Loops (15)     [+] |      |
+| | Loops       |            +---------------------------+      |
+| | - Shopping  |            |                           |      |
+| | - Travel    |            | [Loop Card]  [Loop Card]  |      |
+| | - Subscript.|            |                           |      |
+| | Emails      |            | [Loop Card]  [Loop Card]  |      |
+| | - Primary   |            |                           |      |
+| | - [Social/Updates] |            | [Loop Card]  [Loop Card]  |      |
+| |             |            |                           |      |
+| |             |            +---------------------------+      |
+| |             |            | Recently Completed (3)    |      |
+| |             |            +---------------------------+      |
+| |             |            |                           |      |
+| |             |            | [Loop Card]  [Loop Card]  |      |
+| |             |            |                           |      |
+| | User Card   |            | [Loop Card]               |      |
+| +-------------+            +---------------------------+      |
+|                                                               |
++---------------------------------------------------------------+
+```
+
+#### Loop Detail View
+```
++---------------------------------------------------------------+
+|  [Logo] Inbox Loops                 [Search] [Settings] [User] |
++---------------------------------------------------------------+
+|                                                               |
+| [< Back]  Amazon Order #12345                      [Actions ▼] |
+|                                                               |
+| +-----------------------------------------------------------+ |
+| |                                                           | |
+| |  [Order Placed]---->[Confirmed]---->[Shipped]---->[Delivered] |
+| |       ✓                 ✓              ✓            ...    | |
+| |    Jan 10            Jan 10         Jan 12        Expected | |
+| |                                                   Jan 15   | |
+| +-----------------------------------------------------------+ |
+|                                                               |
+| Component Emails                                              |
+| +-----------------------------------------------------------+ |
+| | [✓] Order Confirmation - Jan 10                    [View] | |
+| | From: orders@amazon.com                                    | |
+| | Your order of "Product Name" has been placed...           | |
+| +-----------------------------------------------------------+ |
+| | [✓] Order Shipping Confirmation - Jan 12           [View] | |
+| | From: shipping@amazon.com                                  | |
+| | Your order has shipped and is on its way...               | |
+| +-----------------------------------------------------------+ |
+| | [+] Add Email to Loop                                     | |
+| +-----------------------------------------------------------+ |
+|                                                               |
++---------------------------------------------------------------+
+```
+
+#### Mobile View (Dashboard)
+```
++----------------------+
+| Inbox Loops    [≡]  |
++----------------------+
+| [Tabs]               |
+| Dashboard | Loops    |
++----------------------+
+|                      |
+| Active Loops (15)    |
+|                      |
+| +------------------+ |
+| | Amazon Order     | |
+| | #12345           | |
+| | 2 of 4 steps     | |
+| | Last update: 2h  | |
+| +------------------+ |
+|                      |
+| +------------------+ |
+| | Flight to NYC    | |
+| | #DL123           | |
+| | 1 of 3 steps     | |
+| | Last update: 1d  | |
+| +------------------+ |
+|                      |
+| +------------------+ |
+| | Netflix          | |
+| | Subscription     | |
+| | 3 of 3 steps     | |
+| | Completed        | |
+| +------------------+ |
+|                      |
+| [Load More...]       |
++----------------------+
+```
+
+## Technical Architecture
+
+### System Components
+
+1. **Frontend Application**
+   - NextJS framework for server-side rendering and routing
+   - Tailwind CSS for styling
+   - Shadcn/ui component library
+   - React state management for UI interactions
+
+2. **Backend Services**
+   - Supabase for data storage and user authentication
+   - Gmail API integration for email access and monitoring
+   - Rule engine for email classification and loop management
+
+3. **Authentication System**
+   - Google OAuth via Supabase
+   - Secure token management
+   - Permission handling for Gmail API access
+
+4. **Rules Engine**
+   - Pattern matching system
+   - Template management
+   - Rule evaluation logic
+
+### Data Models
+
+1. **User**
+   - userID (PK)
+   - email
+   - displayName
+   - preferences (JSONB)
+   - createdAt
+   - updatedAt
+   - lastLoginAt
+   - gmailAuthToken
+   - gmailRefreshToken
+   - gmailTokenExpiry
+
+2. **Loop**
+   - loopID (PK)
+   - userID (FK)
+   - category (enum: 'shopping', 'travel', 'subscription', 'other')
+   - status (enum: 'active', 'complete', 'attention_required')
+   - title
+   - description
+   - createdAt
+   - updatedAt
+   - lastEmailAt
+   - expectedNextStepAt
+   - isManuallyCreated (boolean)
+
+3. **LoopEmail**
+   - emailID (PK)
+   - loopID (FK)
+   - gmailID (unique identifier from Gmail)
+   - stageType (enum: 'initiation', 'confirmation', 'update', 'completion', 'other')
+   - position (integer for ordering)
+   - receivedAt
+   - subject
+   - sender
+   - snippet (preview text)
+   - metadata (JSONB - extracted structured data)
+
+4. **Rule**
+   - ruleID (PK)
+   - category (FK to category table)
+   - name
+   - description
+   - patternType (enum: 'subject', 'sender', 'content', 'header')
+   - pattern (regex or pattern string)
+   - action (JSONB - what to do when pattern matches)
+   - priority (integer)
+   - isActive (boolean)
+   - createdAt
+   - updatedAt
+
+5. **Template**
+   - templateID (PK)
+   - category (FK to category table)
+   - name
+   - description
+   - stages (JSONB array of expected stages)
+   - expectedTimelines (JSONB - expected time between stages)
+   - createdAt
+   - updatedAt
+
+6. **Category**
+   - categoryID (PK)
+   - name
+   - description
+   - icon
+   - color
+   - isDefault (boolean)
+   - createdAt
+   - updatedAt
+
+7. **Notification**
+   - notificationID (PK)
+   - userID (FK)
+   - loopID (FK)
+   - type (enum: 'loop_update', 'missing_step', 'delay', 'completion')
+   - message
+   - isRead (boolean)
+   - createdAt
+
+### Database Schema Diagram
+```mermaid
+erDiagram
+    User ||--o{ Loop : "has many"
+    User {
+        uuid userID PK
+        string email
+        string displayName
+        jsonb preferences
+        timestamp createdAt
+        timestamp updatedAt
+        timestamp lastLoginAt
+        string gmailAuthToken
+        string gmailRefreshToken
+        timestamp gmailTokenExpiry
+    }
+
+    Loop ||--o{ LoopEmail : "contains"
+    Loop {
+        uuid loopID PK
+        uuid userID FK
+        enum category
+        enum status
+        string title
+        string description
+        timestamp createdAt
+        timestamp updatedAt
+        timestamp lastEmailAt
+        timestamp expectedNextStepAt
+        boolean isManuallyCreated
+    }
+
+    LoopEmail {
+        uuid emailID PK
+        uuid loopID FK
+        string gmailID
+        enum stageType
+        int position
+        timestamp receivedAt
+        string subject
+        string sender
+        string snippet
+        jsonb metadata
+    }
+
+    Category ||--o{ Loop : "categorizes"
+    Category ||--o{ Template : "has"
+    Category ||--o{ Rule : "applies to"
+    Category {
+        uuid categoryID PK
+        string name
+        string description
+        string icon
+        string color
+        boolean isDefault
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    Template {
+        uuid templateID PK
+        uuid categoryID FK
+        string name
+        string description
+        jsonb stages
+        jsonb expectedTimelines
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    Rule {
+        uuid ruleID PK
+        string name
+        string description
+        enum patternType
+        string pattern
+        jsonb action
+        int priority
+        boolean isActive
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    Rule ||--o{ RuleCategory : "belongs to"
+    RuleCategory {
+        uuid ruleCatID PK
+        uuid ruleID FK
+        uuid categoryID FK
+    }
+
+    Loop ||--o{ Notification : "generates"
+    User ||--o{ Notification : "receives"
+    Notification {
+        uuid notificationID PK
+        uuid userID FK
+        uuid loopID FK
+        enum type
+        string message
+        boolean isRead
+        timestamp createdAt
+    }
+```
+
+### APIs and Integrations
+
+1. **Gmail API**
+   - Email fetching and monitoring
+   - Label management
+   - Search functionality
+
+2. **Supabase API**
+   - Data storage and retrieval
+   - User authentication
+   - Real-time updates
+
+3. **Internal APIs**
+   - Rule evaluation endpoints
+   - Loop management endpoints
+   - User preference endpoints
+
+### Infrastructure Requirements
+
+1. **Hosting**
+   - Vercel for NextJS frontend
+   - Supabase for backend services
+
+2. **Database**
+   - PostgreSQL (via Supabase)
+
+3. **Monitoring & Logging**
+   - Error tracking
+   - Performance monitoring
+   - Usage analytics
+
+4. **Security**
+   - OAuth 2.0 implementation
+   - Data encryption
+   - Regular security audits
+
+## Development Roadmap
+
+### Phase 1: MVP Foundation
+1. **Authentication System**
+   - Google OAuth integration via Supabase
+   - User profile setup
+   - Gmail API authorization
+
+2. **Basic Email Processing**
+   - Email fetching from Gmail
+   - Basic metadata extraction
+   - Simple email storage structure
+
+3. **Core Loop Detection**
+   - Shopping order detection
+   - Basic loop creation
+   - Simple timeline visualization
+
+4. **Minimal UI**
+   - Dashboard with loop listing
+   - Loop detail view
+   - Dark mode theme implementation
+
+### Phase 2: Core Functionality
+1. **Enhanced Rule Engine**
+   - Pattern matching improvements
+   - Rule creation interface
+   - Category-specific rule templates
+
+2. **Complete Category Support**
+   - Travel email processing
+   - Subscription/utility loop support
+   - Category-specific visualizations
+
+3. **Loop Management**
+   - Manual loop creation
+   - Email assignment to loops
+   - Loop archiving and deletion
+
+4. **Enhanced Visualization**
+   - Interactive timelines
+   - Status indicators
+   - Progress tracking
+
+### Phase 3: Advanced Features
+1. **Anomaly Detection**
+   - Missing step identification
+   - Delay detection
+   - Alert system
+
+2. **Smart Suggestions**
+   - Next action recommendations
+   - Follow-up reminders
+   - Completion predictions
+
+3. **UI Refinements**
+   - Animation and transitions
+   - Advanced filtering
+   - Search functionality
+
+4. **Personalization**
+   - User preferences
+   - Custom rule creation
+   - UI customization options
+
+### Phase 4: Expansion
+1. **Additional Loop Types**
+   - Financial transactions
+   - Healthcare appointments
+   - Education/course enrollment
+
+2. **Analytics Dashboard**
+   - Process completion statistics
+   - Vendor performance metrics
+   - Personal activity insights
+
+3. **Integration Capabilities**
+   - Calendar integration
+   - Task manager connections
+   - Mobile app development
+
+4. **Rule Sharing**
+   - Community rule templates
+   - Rule import/export
+   - Rule marketplace foundation
+
+## Logical Dependency Chain
+
+### Foundation Layer
+1. **Authentication & Authorization**
+   - Google OAuth via Supabase
+   - Gmail API access permissions
+   - User data structure
+
+2. **Email Access Layer**
+   - Basic email fetching
+   - Email metadata processing
+   - Email storage architecture
+
+3. **Data Model Implementation**
+   - Database schema setup
+   - Basic CRUD operations
+   - Relationship management
+
+### Core Functionality Layer
+1. **Pattern Recognition System**
+   - Email header analysis
+   - Content pattern matching
+   - Entity extraction (order IDs, etc.)
+
+2. **Loop Management**
+   - Loop creation logic
+   - Email-to-loop assignment
+   - Loop state management
+
+3. **Rule Engine Foundation**
+   - Basic rule structure
+   - Rule evaluation
+   - Rule application to emails
+
+### User Interface Layer
+1. **Dashboard Implementation**
+   - Loop listing view
+   - Category organization
+   - Status indicators
+
+2. **Loop Detail View**
+   - Timeline visualization
+   - Component email display
+   - Status progression
+
+3. **User Controls**
+   - Manual loop management
+   - Email assignment
+   - Preference settings
+
+### Enhancement Layer
+1. **Advanced Pattern Recognition**
+   - Natural language processing
+   - Multi-stage pattern matching
+   - Contextual understanding
+
+2. **Predictive Features**
+   - Expected stage detection
+   - Timeline predictions
+   - Missing step alerts
+
+3. **Expanded Categories**
+   - Travel-specific processing
+   - Subscription management
+   - Additional loop types
+
+## Risks and Mitigations
+
+### Technical Challenges
+
+1. **Gmail API Limitations**
+   - **Risk**: Rate limits, access restrictions, or API changes could impact functionality
+   - **Mitigation**: Implement caching, batching, and efficient processing; maintain awareness of API changes; build fallback mechanisms
+
+2. **Email Format Variability**
+   - **Risk**: Different vendors format emails differently, making pattern recognition challenging
+   - **Mitigation**: Develop flexible pattern matching; continuously improve recognition patterns; allow manual corrections
+
+3. **Rule Complexity**
+   - **Risk**: Rules could become too complex to manage or too brittle to handle edge cases
+   - **Mitigation**: Build a testing framework for rules; implement rule versioning; design for rule modularity
+
+### MVP Scoping
+
+1. **Feature Creep**
+   - **Risk**: Adding too many features before establishing core functionality
+   - **Mitigation**: Strict prioritization; focus on shopping category first; ensure complete vertical functionality before expanding horizontally
+
+2. **User Adoption Barriers**
+   - **Risk**: Initial setup friction or concept complexity could discourage adoption
+   - **Mitigation**: Simplified onboarding; clear tutorials; immediate value demonstration with pre-processed emails
+
+3. **Performance at Scale**
+   - **Risk**: System might work for test accounts but struggle with large email volumes
+   - **Mitigation**: Early performance testing; incremental processing; intelligent prioritization of recent emails
+
+### Resource Constraints
+
+1. **Development Complexity**
+   - **Risk**: Underestimating the complexity of email parsing and pattern recognition
+   - **Mitigation**: Start with highly structured emails (receipts, shipping notifications); expand to more complex formats gradually
+
+2. **User Experience Design**
+   - **Risk**: Creating an intuitive interface for a novel concept is challenging
+   - **Mitigation**: User testing early and often; iterative design approach; familiar visual metaphors
+
+3. **Privacy and Security**
+   - **Risk**: Email access raises significant privacy concerns
+   - **Mitigation**: Clear privacy policies; limited data extraction; local processing where possible; robust security measures
+
+## Appendix
+
+### Research Findings
+
+1. **Email Usage Statistics**
+   - Average user receives 121 business emails per day
+   - 42% of emails relate to processes that span multiple messages
+   - Users report spending 28% of email time on process tracking and follow-up
+
+2. **Competitive Analysis**
+   - Current email clients offer limited threading capabilities
+   - No mainstream solution currently offers process-based organization
+   - Task management apps require manual entry and don't integrate deeply with email
+
+3. **User Pain Points**
+   - Difficulty tracking multi-step processes
+   - Lost or overlooked emails in busy inboxes
+   - Manual effort required to organize related emails
+
+### Technical Specifications
+
+1. **Gmail API Requirements**
+   - Read access to user's inbox
+   - Label management permissions
+   - Search functionality
+
+2. **Performance Targets**
+   - Initial scan processing: < 5 minutes for 1000 emails
+   - Incremental updates: < 10 seconds
+   - UI responsiveness: < 200ms for common operations
+
+3. **Security Requirements**
+   - OAuth token storage best practices
+   - No permanent storage of email content, only metadata
+   - Regular security audits
+   - Data encryption at rest and in transit
+
+### System Architecture Diagram
+```mermaid
+flowchart TD
+    Client["Client Browser"] <--> NextJS["NextJS Frontend"]
+    NextJS --> BackendLogic["Backend Logic"]
+    Gmail["Gmail API"] <--> BackendLogic
+    BackendLogic --> Supabase["Supabase Services"]
+    Supabase --> PostgreSQL["PostgreSQL Database"]
+
+    style Client fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style NextJS fill:#61dafb,stroke:#333,stroke-width:2px
+    style BackendLogic fill:#f1fa8c,stroke:#333,stroke-width:2px
+    style Gmail fill:#ea4335,stroke:#333,stroke-width:2px
+    style Supabase fill:#3ecf8e,stroke:#333,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#333,stroke-width:2px
+```
+
+### Authentication Flow Diagram
+```mermaid
+sequenceDiagram
+    participant User
+    participant Supabase as Supabase Auth
+    participant Google as Google OAuth
+    participant App as App Logic
+    participant Gmail as Gmail API
+
+    User->>Supabase: Sign in request
+    Supabase->>Google: Redirect to OAuth
+    Google->>Supabase: Auth token
+    Supabase->>App: User authenticated
+    App->>Gmail: Request API access
+    Gmail->>App: API access token
+    App->>User: Authentication complete
+```
+
+### Rule Processing Flow
+```mermaid
+flowchart LR
+    Email["New Email Arrives"] --> RuleEngine["Rule Engine Processing"]
+    RuleEngine --> PatternMatching["Pattern Matching"]
+    PatternMatching --> ActionExecution["Action Execution"]
+    ActionExecution --> LoopAssignment["Loop Assignment"]
+    LoopAssignment --> UserNotification["User Notification"]
+
+    style Email fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style RuleEngine fill:#ffb86c,stroke:#333,stroke-width:2px
+    style PatternMatching fill:#8be9fd,stroke:#333,stroke-width:2px
+    style ActionExecution fill:#50fa7b,stroke:#333,stroke-width:2px
+    style LoopAssignment fill:#bd93f9,stroke:#333,stroke-width:2px
+    style UserNotification fill:#ff79c6,stroke:#333,stroke-width:2px
+```
+
+### Implementation Timeline
+
+```mermaid
+gantt
+    title Inbox-Loops Implementation Timeline
+    dateFormat  YYYY-MM-DD
+    section Project Setup
+    Next.js project initialization    :a1, 2023-01-01, 3d
+    Supabase integration              :a2, after a1, 4d
+    Google OAuth implementation       :a3, after a2, 4d
+    User profile management           :a4, after a3, 3d
+
+    section Data Model & UI
+    Database schema implementation    :b1, after a4, 5d
+    Core UI components                :b2, after b1, 4d
+    Navigation structure              :b3, after b2, 3d
+    Dark/light mode implementation    :b4, after b3, 2d
+
+    section Gmail Integration
+    Email fetching functionality      :c1, after b4, 5d
+    Metadata extraction               :c2, after c1, 4d
+    Basic email storage               :c3, after c2, 3d
+    Email display components          :c4, after c3, 2d
+
+    section Loop Management
+    Basic rule engine                 :d1, after c4, 5d
+    Shopping category implementation  :d2, after d1, 4d
+    Loop creation logic               :d3, after d2, 3d
+    Loop visualization components     :d4, after d3, 2d
+
+    section Visualization
+    Timeline component development    :e1, after d4, 4d
+    Status indicators                 :e2, after e1, 3d
+    Email sequence visualization      :e3, after e2, 4d
+    Loop management UI                :e4, after e3, 3d
+
+    section Testing
+    Performance optimization          :f1, after e4, 4d
+    User testing                      :f2, after f1, 5d
+    Bug fixes                         :f3, after f2, 4d
+    Documentation                     :f4, after f3, 3d
+```
