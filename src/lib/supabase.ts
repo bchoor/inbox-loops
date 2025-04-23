@@ -1,5 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
+/**
+ * Supabase Client Configuration
+ *
+ * This file sets up the Supabase client for use throughout the application.
+ * It requires environment variables to be set in .env.local file.
+ */
 // These environment variables need to be set in .env.local
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -13,7 +19,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Export types for better TypeScript integration
-export type { 
+export type {
   SupabaseClient,
   Session,
   User,
