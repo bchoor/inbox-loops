@@ -1,0 +1,37 @@
+# Task ID: 8
+# Title: Category-Specific Templates and Visualization
+# Status: pending
+# Dependencies: 5, 7
+# Priority: medium
+# Description: Implement specialized templates and visualizations for different loop categories (Shopping, Travel, Subscriptions).
+# Details:
+Create template definitions for shopping, travel, and subscription categories. Implement category-specific rule sets. Develop specialized visualizations for each category. Build template management interfaces. Create logic to apply templates to loops. Implement expected timeline calculations based on template definitions. Develop template versioning system to handle updates.
+
+# Test Strategy:
+Test template application to various email types. Verify that category-specific visualizations render correctly. Validate that expected timeline calculations are accurate. Ensure template versioning handles updates without breaking existing loops.
+
+# Subtasks:
+## 1. Define Template Schema for Each Category [pending]
+### Dependencies: None
+### Description: Create data schemas and rule sets for shopping, travel, and subscription templates
+### Details:
+Define JSON schemas for each category (Shopping, Travel, Subscriptions) with appropriate fields. For Shopping: include fields for purchase frequency, typical amount ranges, and merchant categories. For Travel: include fields for booking windows, trip duration, and expense categories. For Subscriptions: include billing frequency, auto-renewal settings, and service tiers. Implement category-specific validation rules for each template type. Create the database models and migrations needed to store these templates. Set up the API endpoints for template CRUD operations.
+
+## 2. Develop Template Management Interface [pending]
+### Dependencies: 8.1
+### Description: Build UI components for creating, editing, and managing templates for each category
+### Details:
+Create a template management dashboard with tabs for each category. Implement category-specific form components that reflect the schema defined in subtask 1. Build template listing views with filtering and search capabilities. Include template versioning UI that shows version history and allows reverting to previous versions. Implement template duplication functionality to allow users to create new templates based on existing ones. Add preview functionality to see how templates will appear when applied to loops. Ensure proper validation of template data before saving.
+
+## 3. Implement Category-Specific Visualizations [pending]
+### Dependencies: 8.1
+### Description: Create specialized visual components for displaying loops of different categories
+### Details:
+Develop visualization components for each category: Shopping - implement product comparison views, purchase history timelines, and spending pattern charts. Travel - create trip timeline visualizations, destination maps, and booking window indicators. Subscriptions - build renewal calendars, tier comparison charts, and payment schedule visualizations. Use appropriate chart libraries and design responsive layouts for each visualization type. Implement data transformation utilities to convert loop data into the format required by visualization components. Create a visualization selection system that automatically chooses the appropriate visualization based on loop category.
+
+## 4. Integrate Templates with Loop Processing Logic [pending]
+### Dependencies: 8.1, 8.2, 8.3
+### Description: Implement the logic to apply templates to loops and calculate expected timelines
+### Details:
+Develop the core logic to apply templates to new and existing loops. Implement expected timeline calculations based on template definitions and category-specific algorithms. Create a template recommendation system that suggests appropriate templates for loops based on their characteristics. Build the template versioning system to handle updates, including migration of loops using outdated templates. Implement category-specific rule processing that applies different business logic based on loop category. Add automated testing for template application logic with test cases for each category. Ensure backward compatibility with existing loops when new template versions are created.
+

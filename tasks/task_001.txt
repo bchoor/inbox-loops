@@ -1,0 +1,37 @@
+# Task ID: 1
+# Title: Project Setup with NextJS, Tailwind, and Shadcn/ui
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Initialize the project with NextJS, configure Tailwind CSS, and integrate Shadcn/ui component library. Set up the basic application structure with routing and layout components.
+# Details:
+Create a new NextJS project using 'create-next-app' with TypeScript support. Configure Tailwind CSS following the NextJS integration guide. Install and set up Shadcn/ui components according to their documentation. Create the basic folder structure for the application: pages, components, lib, styles, etc. Implement the main layout with sidebar navigation, dark/light mode toggle, and responsive design as shown in the UI mockups.
+
+# Test Strategy:
+Verify that the application builds without errors. Test the responsive design across different screen sizes. Ensure dark/light mode toggle works correctly. Validate that Shadcn/ui components render properly.
+
+# Subtasks:
+## 1. Initialize NextJS project with TypeScript and Tailwind CSS [pending]
+### Dependencies: None
+### Description: Create a new NextJS project with TypeScript support and configure Tailwind CSS for styling
+### Details:
+Use 'npx create-next-app@latest' with the TypeScript option enabled. When prompted, select 'Yes' for Tailwind CSS integration. After initialization, verify the tailwind.config.js file is properly configured with the correct content paths. Ensure the globals.css file includes the Tailwind directives (@tailwind base, components, and utilities). Test the setup by creating a simple component with Tailwind classes to confirm styling works correctly.
+
+## 2. Install and configure Shadcn/ui component library [pending]
+### Dependencies: 1.1
+### Description: Add Shadcn/ui to the project and set up the necessary configuration for using its components
+### Details:
+Follow the Shadcn/ui installation guide for Next.js: Run 'npx shadcn-ui@latest init' to set up the configuration. When prompted, select TypeScript, styling preferences (generally tailwind.css), and component location (usually /components/ui). Configure the theme in the globals.css file by adding the required CSS variables for light and dark modes. Install and add at least one component (like Button) using 'npx shadcn-ui@latest add button' to verify the setup works. Create a simple UI test page that demonstrates the component with different variants.
+
+## 3. Create folder structure and implement basic routing [pending]
+### Dependencies: 1.1
+### Description: Set up the project folder structure and implement the app router configuration
+### Details:
+Create the following folder structure: app/ (for Next.js App Router pages), components/ (for shared components, with ui/ subfolder for shadcn components), lib/ (for utility functions), types/ (for TypeScript type definitions), and styles/ (for any additional CSS). Set up the root layout.tsx in the app directory with HTML structure, metadata, and font configuration. Create initial route pages: app/page.tsx (homepage) and at least one nested route like app/dashboard/page.tsx. Implement basic navigation between these routes using Next.js Link component. Test that routing works correctly.
+
+## 4. Implement main application layout with responsive design [pending]
+### Dependencies: 1.2, 1.3
+### Description: Create the main layout components including sidebar navigation and dark/light mode toggle
+### Details:
+Create a responsive layout component that includes: 1) A sidebar navigation component that collapses on mobile screens, 2) A header component with the app logo and dark/light mode toggle, 3) A main content area that adjusts based on sidebar state. Implement the dark/light mode toggle using Shadcn/ui components and Next.js theming support. Use Tailwind's responsive utilities (sm:, md:, lg:) to ensure the layout works on all screen sizes. Implement sidebar navigation links that highlight the active route. Test the layout on multiple screen sizes and verify that dark/light mode toggle persists between page refreshes using localStorage or cookies.
+

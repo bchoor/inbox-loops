@@ -1,0 +1,37 @@
+# Task ID: 7
+# Title: Dashboard and Loop Visualization UI
+# Status: pending
+# Dependencies: 1, 6
+# Priority: medium
+# Description: Create the main dashboard UI for displaying loops, including categorization, filtering, and the loop detail view with timeline visualization.
+# Details:
+Implement the main dashboard layout as shown in the UI mockups. Create loop card components with status indicators. Develop the loop detail view with timeline visualization. Implement category-based organization (Shopping, Travel, Subscriptions). Build status-based filtering (Active, Complete, Attention Required). Create responsive layouts for desktop and mobile views. Implement search functionality across all loops.
+
+# Test Strategy:
+Verify that the dashboard displays loops correctly with appropriate categorization. Test filtering and search functionality. Validate that the timeline visualization accurately represents loop stages. Ensure the UI is responsive and works well on different screen sizes.
+
+# Subtasks:
+## 1. Implement Core Dashboard Layout and Navigation [pending]
+### Dependencies: None
+### Description: Create the foundational dashboard layout with navigation structure and responsive container components
+### Details:
+Implement the main dashboard grid/flex layout according to mockups. Create the navigation bar with tabs/sections for different loop categories (Shopping, Travel, Subscriptions). Build responsive containers that adapt to desktop and mobile breakpoints. Set up the basic state management structure to handle filtering and loop data. Implement the dashboard header with search input field (functionality will be added later). This subtask focuses on the structural elements only, not the dynamic content.
+
+## 2. Develop Loop Card Components and List Views [pending]
+### Dependencies: 7.1
+### Description: Create reusable loop card components with status indicators and implement list views for different categories
+### Details:
+Design and implement the loop card component with status indicators (Active, Complete, Attention Required). Create visual treatments for different states and categories. Implement the grid/list views for displaying loop cards by category. Add empty states for when no loops are available. Implement basic click handling to select a loop (detail view will be implemented later). Connect the components to the state management structure created in subtask 1. Test the components with mock data to ensure proper rendering across different screen sizes.
+
+## 3. Implement Filtering, Search and Category Organization [pending]
+### Dependencies: 7.2
+### Description: Add functionality for filtering loops by status, searching across loops, and organizing by categories
+### Details:
+Implement status-based filtering controls (Active, Complete, Attention Required) with visual indicators of active filters. Build the search functionality to filter loops based on text input, searching across all relevant loop fields. Create the category-based organization system allowing users to view loops by Shopping, Travel, or Subscriptions categories. Ensure all filtering operations work in combination (e.g., searching within a specific category and status). Update the UI to reflect the current filter state and provide clear ways to reset filters. Connect these filtering capabilities to the loop card list views implemented in subtask 2.
+
+## 4. Create Loop Detail View with Timeline Visualization [pending]
+### Dependencies: 7.2, 7.3
+### Description: Implement the detailed view for individual loops with interactive timeline visualization
+### Details:
+Develop the loop detail view component that appears when a loop card is selected. Implement the timeline visualization showing loop events, status changes, and important dates. Create interactive elements within the timeline to expand/collapse sections or view specific details. Add navigation between the list view and detail view with proper state preservation. Ensure the detail view is responsive and adapts to different screen sizes. Connect the detail view to the loop selection logic implemented in previous subtasks. Implement animations for smooth transitions between list and detail views.
+

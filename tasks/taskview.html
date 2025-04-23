@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks Dashboard</title>
+  <style>
+    /* Dark Mode Base */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      margin: 0;
+      padding: 20px;
+    }
+    .main-container {
+      margin-right: 380px; /* Reserve space for drawer */
+    }
+    h1 { margin-bottom: 16px; font-size: 24px; color: #58a6ff; }
+    .section {
+      background: #161b22;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    h2 { margin-bottom: 12px; font-size: 18px; color: #79c0ff; }
+    p, li { color: #c9d1d9; }
+
+    /* Progress Bars */
+    .bar-container {
+      position: relative;
+      height: 8px;
+      background: #30363d;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .bar {
+      height: 100%;
+      background: #58a6ff;
+      transition: width 0.4s ease;
+    }
+
+    /* Metrics Grid */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .metrics div { font-size: 14px; }
+
+    /* Controls */
+    .controls { text-align: right; margin-bottom: 8px; }
+    .controls button {
+      background: #238636;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: background 0.2s;
+    }
+    .controls button:hover { background: #2ea043; }
+
+    /* Table Container Fixed */
+    #task-table table { width: 100%; }
+
+    /* Table */
+    table { border-spacing: 0; font-size: 14px; }
+    thead { background: #21262d; }
+    th, td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid #30363d;
+    }
+    tr.task-row:hover { background: #21262d; }
+    tr.subtask:hover { background: #1f6feb11; }
+    td.toggle-cell { width: 24px; text-align: center; cursor: pointer; color: #8b949e; }
+    .toggle-icon { font-size: 12px; user-select: none; }
+    tr.subtask td:nth-child(3) { padding-left: 24px; font-style: italic; color: #8b949e; }
+
+    /* Status Color Coding */
+    .status-done { color: #3fb950; }
+    .status-pending { color: #d4a72c; }
+    .status-in-progress { color: #1f6feb; }
+    .status-blocked { color: #e5534b; }
+    .status-deferred { color: #ad70ef; }
+    .status-cancelled { color: #7a7a7a; }
+
+    /* Drawer */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -380px;
+      width: 360px;
+      height: 100%;
+      background: #161b22;
+      box-shadow: -4px 0 8px rgba(0,0,0,0.8);
+      transition: right 0.3s ease;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .drawer.open { right: 0; }
+    #close-drawer {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #8b949e;
+      cursor: pointer;
+    }
+    .drawer h2 { margin-top: 0; font-size: 20px; color: #58a6ff; }
+    .drawer h3 { margin: 16px 0 4px; font-size: 14px; color: #8b949e; }
+    .drawer p { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #c9d1d9; }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>Project Dashboard</h1>
+
+    <div class="section" id="overview">
+      <h2>Tasks Progress</h2>
+      <div class="bar-container"><div id="tasks-bar" class="bar"></div></div>
+      <p><span id="tasks-done"></span> Done / <span id="tasks-total"></span> Total</p>
+      <h2>Subtasks Progress</h2>
+      <div class="bar-container"><div id="subtasks-bar" class="bar"></div></div>
+      <p><span id="subtasks-done"></span> Done / <span id="subtasks-total"></span> Total</p>
+      <h2>Priority Breakdown</h2>
+      <ul id="priority-breakdown"></ul>
+    </div>
+
+    <div class="section" id="dependencies">
+      <h2>Dependency Metrics</h2>
+      <div class="metrics">
+        <div>No dependencies: <span id="no-deps"></span></div>
+        <div>Ready to work: <span id="ready"></span></div>
+        <div>Blocked: <span id="blocked"></span></div>
+        <div>Top dependent: <span id="top-dependent"></span></div>
+        <div>Avg deps/task: <span id="avg-deps"></span></div>
+      </div>
+    </div>
+
+    <div class="section" id="next-task">
+      <h2>Next Task</h2>
+      <div id="next-task-content"></div>
+    </div>
+
+    <div class="section" id="task-table">
+      <h2>All Tasks</h2>
+      <div class="controls">
+        <button id="expand-all">Expand All</button>
+        <button id="collapse-all">Collapse All</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th></th><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Deps</th></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="drawer" class="drawer">
+    <button id="close-drawer">×</button>
+    <div id="drawer-content"></div>
+  </div>
+
+  <script>
+    let _tasks = [];
+    fetch('tasks.json')
+      .then(res => res.json())
+      .then(data => { _tasks = data.tasks; renderDashboard(_tasks); })
+      .catch(err => console.error(err));
+
+    function renderDashboard(tasks) {
+      // Metrics
+      const counts = { done:0,'in-progress':0,pending:0,blocked:0,deferred:0,cancelled:0 };
+      let totalSub=0, doneSub=0; const priorityCount={high:0,medium:0,low:0};
+      tasks.forEach(t=>{ counts[t.status]++; t.priority&&priorityCount[t.priority]++; if(Array.isArray(t.subtasks)){totalSub+=t.subtasks.length; t.subtasks.forEach(st=>{st.status==='done'&&doneSub++;}); } });
+      const totalTasks = tasks.length;
+      document.getElementById('tasks-bar').style.width = `${counts.done/totalTasks*100}%`;
+      document.getElementById('tasks-done').textContent = counts.done;
+      document.getElementById('tasks-total').textContent = totalTasks;
+      document.getElementById('subtasks-bar').style.width = `${doneSub/totalSub*100}%`;
+      document.getElementById('subtasks-done').textContent = doneSub;
+      document.getElementById('subtasks-total').textContent = totalSub;
+
+      // Priority Breakdown
+      const pb = document.getElementById('priority-breakdown'); pb.innerHTML = '';
+      Object.entries(priorityCount).forEach(([p,c])=>{ const li = document.createElement('li'); li.textContent = `${p.charAt(0).toUpperCase()+p.slice(1)} priority: ${c}`; li.className=`priority-${p}`; pb.appendChild(li); });
+
+      // Dependencies
+      const noDeps = tasks.filter(t=>t.dependencies.length===0).length;
+      const blockedCount = tasks.filter(t=>t.dependencies.some(d=>tasks.find(x=>x.id===d).status!=='done')).length;
+      const readyCount = totalTasks-noDeps-blockedCount;
+      const avgDeps = (tasks.map(t=>t.dependencies.length).reduce((a,b)=>a+b,0)/totalTasks).toFixed(2);
+      const depCounts = {};
+      tasks.forEach(t=>t.dependencies.forEach(d=>depCounts[d]=(depCounts[d]||0)+1));
+      const topDep = Object.entries(depCounts).sort((a,b)=>b[1]-a[1])[0]||['None',0];
+      document.getElementById('no-deps').textContent = noDeps;
+      document.getElementById('ready').textContent = readyCount;
+      document.getElementById('blocked').textContent = blockedCount;
+      document.getElementById('avg-deps').textContent = avgDeps;
+      document.getElementById('top-dependent').textContent = `#${topDep[0]} (${topDep[1]})`;
+
+      // Next Task
+      const next = tasks.filter(t=>t.status==='pending'&&t.dependencies.every(d=>tasks.find(x=>x.id===d).status==='done'))
+        .sort((a,b)=>({high:0,medium:1,low:2}[a.priority]-{high:0,medium:1,low:2}[b.priority]))[0];
+      const nxt = document.getElementById('next-task-content');
+      nxt.innerHTML = next ? `<strong>#${next.id} – ${next.title}</strong><br><em>Priority:</em> ${next.priority}` : 'None';
+
+      // Build Table
+      const tbody = document.getElementById('table-body'); tbody.innerHTML = '';
+      tasks.forEach(t=>{
+        const tr = document.createElement('tr'); tr.className='task-row'; tr.dataset.taskId=t.id;
+        tr.innerHTML = `<td class='toggle-cell'><span class='toggle-icon'>+</span></td><td>${t.id}</td><td>${t.title}</td><td class='status-${t.status.replace(/\s+/g,'-')}'>${t.status}</td><td>${t.priority||'-'}</td><td>${t.dependencies.join(',')||'-'}</td>`;
+        tbody.appendChild(tr);
+        if(Array.isArray(t.subtasks)) t.subtasks.forEach(st=>{
+          const sr=document.createElement('tr'); sr.className='subtask'; sr.dataset.parentId=t.id;
+          sr.innerHTML=`<td></td><td>${t.id}.${st.id}</td><td>${st.title}</td><td class='status-${st.status.replace(/\s+/g,'-')}'>${st.status}</td><td>-</td><td>${(st.dependencies||[]).map(d=>`${t.id}.${d}`).join(',')||'-'}</td>`;
+          sr.style.display='none'; tbody.appendChild(sr);
+        });
+      });
+
+      // Toggle
+      document.querySelectorAll('.toggle-icon').forEach(icon=>{
+        icon.addEventListener('click',e=>{
+          e.stopPropagation(); const row=e.target.closest('tr'); const id=row.dataset.taskId;
+          const expand = e.target.textContent === '+'; e.target.textContent = expand ? '-' : '+';
+          let next = row.nextElementSibling;
+          while(next && next.dataset.parentId===id) { next.style.display=expand?'table-row':'none'; next=next.nextElementSibling; }
+        });
+      });
+
+      // Expand/Collapse All
+      document.getElementById('expand-all').onclick = ()=>{ document.querySelectorAll('.toggle-icon').forEach(i=>i.textContent='-'); document.querySelectorAll('tr.subtask').forEach(r=>r.style.display='table-row'); };
+      document.getElementById('collapse-all').onclick = ()=>{ document.querySelectorAll('.toggle-icon').forEach(i=>i.textContent='+'); document.querySelectorAll('tr.subtask').forEach(r=>r.style.display='none'); };
+
+      // Drawer for tasks
+      document.querySelectorAll('tr.task-row').forEach(row=>{
+        row.addEventListener('click',()=>{
+          const t=_tasks.find(x=>x.id==row.dataset.taskId);
+          const c=document.getElementById('drawer-content');
+          c.innerHTML=`<h2>${t.title}</h2><p><strong>ID:</strong> ${t.id}</p><p><strong>Status:</strong> ${t.status}</p><p><strong>Priority:</strong> ${t.priority||'-'}</p><h3>Description</h3><p>${t.description.replace(/\n/g,'<br>')}</p><h3>Details</h3><p>${t.details.replace(/\n/g,'<br>')}</p><h3>Test Strategy</h3><p>${t.testStrategy.replace(/\n/g,'<br>')}</p>`;
+          document.getElementById('drawer').classList.add('open');
+        });
+      });
+
+      // Drawer for subtasks
+      document.querySelectorAll('tr.subtask').forEach(row=>{
+        row.addEventListener('click',e=>{
+          e.stopPropagation(); const [p,s]=row.children[1].textContent.split('.').map(Number);
+          const parent=_tasks.find(x=>x.id===p); const st=parent.subtasks.find(x=>x.id===s);
+          const c=document.getElementById('drawer-content');
+          c.innerHTML=`<h2>${st.title}</h2><p><strong>ID:</strong> ${p}.${s}</p><p><strong>Status:</strong> ${st.status}</p><p><strong>Parent:</strong> ${parent.title}</p><h3>Description</h3><p>${st.description.replace(/\n/g,'<br>')}</p><h3>Details</h3><p>${st.details.replace(/\n/g,'<br>')}</p>`;
+          document.getElementById('drawer').classList.add('open');
+        });
+      });
+
+      // Close drawer
+      document.getElementById('close-drawer').onclick = ()=>{ document.getElementById('drawer').classList.remove('open'); };
+    }
+  </script>
+</body>
+</html>
