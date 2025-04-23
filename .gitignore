@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# taskmaster
+/tasks/
+/scripts/task-complexity-report.json
