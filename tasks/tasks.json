@@ -4,7 +4,7 @@
       "id": 1,
       "title": "Project Setup with NextJS, Tailwind, and Shadcn/ui",
       "description": "Initialize the project with NextJS, configure Tailwind CSS, and integrate Shadcn/ui component library. Set up the basic application structure with routing and layout components.",
-      "status": "pending",
+      "status": "done",
       "dependencies": [],
       "priority": "high",
       "details": "Create a new NextJS project using 'create-next-app' with TypeScript support. Configure Tailwind CSS following the NextJS integration guide. Install and set up Shadcn/ui components according to their documentation. Create the basic folder structure for the application: pages, components, lib, styles, etc. Implement the main layout with sidebar navigation, dark/light mode toggle, and responsive design as shown in the UI mockups.",
@@ -14,7 +14,7 @@
           "id": 1,
           "title": "Initialize NextJS project with TypeScript and Tailwind CSS",
           "description": "Create a new NextJS project with TypeScript support and configure Tailwind CSS for styling",
-          "status": "pending",
+          "status": "done",
           "dependencies": [],
           "details": "Use 'npx create-next-app@latest' with the TypeScript option enabled. When prompted, select 'Yes' for Tailwind CSS integration. After initialization, verify the tailwind.config.js file is properly configured with the correct content paths. Ensure the globals.css file includes the Tailwind directives (@tailwind base, components, and utilities). Test the setup by creating a simple component with Tailwind classes to confirm styling works correctly."
         },
@@ -22,7 +22,7 @@
           "id": 2,
           "title": "Install and configure Shadcn/ui component library",
           "description": "Add Shadcn/ui to the project and set up the necessary configuration for using its components",
-          "status": "pending",
+          "status": "done",
           "dependencies": [
             1
           ],
@@ -32,7 +32,7 @@
           "id": 3,
           "title": "Create folder structure and implement basic routing",
           "description": "Set up the project folder structure and implement the app router configuration",
-          "status": "pending",
+          "status": "done",
           "dependencies": [
             1
           ],
@@ -42,7 +42,7 @@
           "id": 4,
           "title": "Implement main application layout with responsive design",
           "description": "Create the main layout components including sidebar navigation and dark/light mode toggle",
-          "status": "pending",
+          "status": "done",
           "dependencies": [
             2,
             3
